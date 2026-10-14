@@ -1,4 +1,4 @@
-Correio espacial
+Corrida espacial
 
 **Magnetron** é um jogo de corrida espacial desenvolvido em linguagem **C** para a disciplina de **Programação Imperativa Funcional (PIF)** da **CESAR School**.
 
