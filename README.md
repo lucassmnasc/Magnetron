@@ -10,3 +10,4 @@ Em **Magnetron**, o jogador comanda uma nave espacial em pistas futuristas. Util
 
 * **Linguagem:** C
 * **Contexto:** Projeto acadêmico (CESAR School — Cadeira de PIF)
+* **Biblioteca:** https://github.com/tgfb/cli-lib/
