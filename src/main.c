@@ -10,6 +10,8 @@
 #include "keyboard.h"
 #include "timer.h"
 
+
+
 int main(){
 
     screenInit(1);
@@ -23,6 +25,7 @@ int main(){
     int naveY = 20;
     int tecla = 0;
     screenSetColor(WHITE,BLACK);
+    printf("%s[49m", ESC); //apaga o rastro preto da função screenSetColor
     screenGotoxy(naveX,naveY); //primeiro "desenha" a nave
     printf("A");
     screenUpdate(); //atualiza a tela
@@ -30,7 +33,7 @@ int main(){
     while (tecla != 'q') {  //finalizar o programa
         if (keyhit()) {
             tecla = readch();
-            if (tecla == 'd'&& naveX < SCRENDX){
+            if (tecla == 'd'&& naveX < SCRENDX){ // mover para esquerda
                 screenGotoxy(naveX, naveY);
                 printf(" ");
                 naveX = naveX + 1;
@@ -38,13 +41,29 @@ int main(){
                 printf("A");
                 screenUpdate();
             }
-            if (tecla == 'a'&& naveX > SCRSTARTX){
+            if (tecla == 'a'&& naveX > SCRSTARTX){ // mover para direita
                 screenGotoxy(naveX, naveY);
                 printf(" ");
                 naveX = naveX - 1;
                 screenGotoxy(naveX, naveY);
                 printf("A");
                 screenUpdate();
+            }
+            if (tecla == 'w' && naveY > SCRSTARTY) {   // subir
+                screenGotoxy(naveX, naveY);
+                printf(" ");
+                naveY = naveY - 1;
+                screenGotoxy(naveX, naveY);
+                printf("A");
+                screenUpdate();                
+            }
+            if (tecla == 's' && naveY < SCRENDY) {     // desce
+                screenGotoxy(naveX, naveY);
+                printf(" ");
+                naveY = naveY + 1;
+                screenGotoxy(naveX, naveY);
+                printf("A");
+                screenUpdate(); 
             }
         }
     }
