@@ -30,6 +30,22 @@ int main(){
     while (tecla != 'q') {  //finalizar o programa
         if (keyhit()) {
             tecla = readch();
+            if (tecla == 'd'&& naveX < SCRENDX){
+                screenGotoxy(naveX, naveY);
+                printf(" ");
+                naveX = naveX + 1;
+                screenGotoxy(naveX, naveY);
+                printf("A");
+                screenUpdate();
+            }
+            if (tecla == 'a'&& naveX > SCRSTARTX){
+                screenGotoxy(naveX, naveY);
+                printf(" ");
+                naveX = naveX - 1;
+                screenGotoxy(naveX, naveY);
+                printf("A");
+                screenUpdate();
+            }
         }
     }
 
