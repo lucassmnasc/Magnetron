@@ -16,7 +16,7 @@ int main(){
 
     screenInit(1);
     keyboardInit();
-    timerInit(50);
+    timerInit(30);
     readch();
 
     
@@ -24,6 +24,8 @@ int main(){
     int naveX = 40;
     int naveY = 20;
     int tecla = 0;
+    int dirX = 0; //direção esquerda-direita
+    int dirY = 0; //direção de cima-baixo
     screenSetColor(WHITE,BLACK);
     printf("%s[49m", ESC); //apaga o rastro preto da função screenSetColor
     screenGotoxy(naveX,naveY); //primeiro "desenha" a nave
@@ -33,37 +35,32 @@ int main(){
     while (tecla != 'q') {  //finalizar o programa
         if (keyhit()) {
             tecla = readch();
-            if (tecla == 'd'&& naveX < SCRENDX){ // mover para esquerda
-                screenGotoxy(naveX, naveY);
+            if (tecla == 'd'){ // mover para direita
+                dirX = 1;
+                
+            }
+            if (tecla == 'a'){ // mover para esquerda
+                dirX = -1;
+                
+            }
+            if (tecla == 'w') {   // subir
+                dirY = -1;                
+            }
+            if (tecla == 's') {     // desce
+                dirY = 1; 
+            }
+            if (timerTimeOver() == 1){
+                screenGotoxy(naveX,naveY);
                 printf(" ");
-                naveX = naveX + 1;
+                int novoX = naveX + dirX;
+                int novoY = naveY + dirY;
+                naveX = novoX;
+                naveY = novoY;
                 screenGotoxy(naveX, naveY);
                 printf("A");
                 screenUpdate();
-            }
-            if (tecla == 'a'&& naveX > SCRSTARTX){ // mover para direita
-                screenGotoxy(naveX, naveY);
-                printf(" ");
-                naveX = naveX - 1;
-                screenGotoxy(naveX, naveY);
-                printf("A");
-                screenUpdate();
-            }
-            if (tecla == 'w' && naveY > SCRSTARTY) {   // subir
-                screenGotoxy(naveX, naveY);
-                printf(" ");
-                naveY = naveY - 1;
-                screenGotoxy(naveX, naveY);
-                printf("A");
-                screenUpdate();                
-            }
-            if (tecla == 's' && naveY < SCRENDY) {     // desce
-                screenGotoxy(naveX, naveY);
-                printf(" ");
-                naveY = naveY + 1;
-                screenGotoxy(naveX, naveY);
-                printf("A");
-                screenUpdate(); 
+                dirX = 0;
+                dirY = 0;
             }
         }
     }
