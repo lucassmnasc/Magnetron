@@ -81,21 +81,30 @@ int main(){
         }
 
         if(timerTimeOver()==1){
-            screenGotoxy(inicio->x,inicio->y);
-            printf(" ");
-            inicio->y += 1;
-            screenSetColor(LIGHTRED,BLACK);
             printf("%s[49m", ESC);
-            screenGotoxy(inicio->x,inicio->y);
-            printf("*");
-            screenUpdate();
-        }
+            Obst *p = inicio;
+            while(p != NULL){
+                screenGotoxy(p->x,p->y);
+                printf(" ");
+                p->y += 1;
+                screenGotoxy(p->x,p->y);
+                printf("*");                
+                p = p->prox;
+            }
 
+
+            
+
+
+        }
+        
         if(inicio->x == naveX && inicio->y == naveY){ //basicamente se tiver no mesmo lugar do obstaculo, conta como se tivesse apertado 'q'
             tecla = 'q';
             bateu = 1;
         }
     }
+    screenUpdate();
+
     
     if(bateu == 1){ //só aparece game over se bater no obstaculo
         screenInit(1);
