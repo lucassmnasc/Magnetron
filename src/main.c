@@ -81,6 +81,7 @@ int main(){
         }
 
         if(timerTimeOver()==1){
+            screenSetColor(LIGHTRED, BLACK);
             printf("%s[49m", ESC);
             Obst *p = inicio;
             while(p != NULL){
@@ -97,10 +98,14 @@ int main(){
 
 
         }
-        
-        if(inicio->x == naveX && inicio->y == naveY){ //basicamente se tiver no mesmo lugar do obstaculo, conta como se tivesse apertado 'q'
-            tecla = 'q';
-            bateu = 1;
+
+        Obst *q = inicio;
+        while (q != NULL) {
+            if (q->x == naveX && q->y == naveY) { //basicamente se tiver no mesmo lugar do obstaculo, conta como se tivesse apertado 'q'
+                tecla = 'q';
+                bateu = 1;
+            }
+            q = q->prox;
         }
     }
     screenUpdate();
@@ -115,7 +120,6 @@ int main(){
         screenUpdate();
 
     }
-
     keyboardDestroy();
     screenDestroy();
     timerDestroy();
