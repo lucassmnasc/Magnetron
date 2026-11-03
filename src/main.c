@@ -5,6 +5,7 @@
  * Based on "From C to C++ course - 2002"
 */
 
+#include <time.h>
 #include <stdlib.h>
 #include "screen.h"
 #include "keyboard.h"
@@ -23,7 +24,8 @@ int main(){
     timerInit(200);
     readch();
 
-    
+    srand(time(NULL));
+    int contador = 0;
 
     int naveX = 40;
     int naveY = 20;
@@ -36,13 +38,9 @@ int main(){
     int endy = 12;
 
     Obst *inicio = NULL;
+    Obst *fim = NULL;
     screenSetColor(WHITE,BLACK);
-    printf("%s[49m", ESC); //apaga o rastro preto da função screenSetColor
-    Obst *novo = malloc(sizeof(Obst));    // reserva memória
-    novo->x = 30;         
-    novo->y = SCRSTARTY;
-    novo->prox = inicio;                  // o novo aponta para o antigo primeiro
-    inicio = novo;                        // agora o novo é o primeiro
+    printf("%s[49m", ESC); //apaga o rastro preto da função screenSetColor    
 
     screenGotoxy(naveX,naveY); //primeiro "desenha" a nave
     printf("A");
@@ -83,6 +81,25 @@ int main(){
         if(timerTimeOver()==1){
             screenSetColor(LIGHTRED, BLACK);
             printf("%s[49m", ESC);
+            if(contador % 5 == 0){
+                Obst *n = malloc(sizeof(Obst));
+                n->x = SCRSTARTX + rand() % 73;
+                n->y = SCRSTARTY+1;
+                n->prox = NULL;
+                if (inicio == NULL) {
+                    inicio = n;
+                } else {
+                    fim->prox = n;
+                }
+                fim = n;
+            }
+            if (inicio != NULL && inicio->y >= SCRENDY) {
+                screenGotoxy(inicio->x, inicio->y);
+                printf(" ");
+                Obst *velho = inicio;       // guarda quem vai sair
+                inicio = inicio->prox;      // o segundo passa a ser o primeiro
+                free(velho);                // libera a memória do antigo
+            }
             Obst *p = inicio;
             while(p != NULL){
                 screenGotoxy(p->x,p->y);
@@ -92,11 +109,8 @@ int main(){
                 printf("*");                
                 p = p->prox;
             }
-
-
-            
-
-
+            contador++;
+            screenUpdate();
         }
 
         Obst *q = inicio;
