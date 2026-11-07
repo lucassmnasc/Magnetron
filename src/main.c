@@ -1,11 +1,4 @@
-/*
-Raylib example file.
-This is an example main file for a simple raylib project.
-Use this as a starting point or replace it with your code.
 
-by Jeffery Myers is marked with CC0 1.0. To view a copy of this license, visit https://creativecommons.org/publicdomain/zero/1.0/
-
-*/
 
 #include "raylib.h"
 
@@ -21,32 +14,58 @@ int main ()
 
 	// Utility function from resource_dir.h to find the resources folder and set it as the current working directory so we can load from it
 	SearchAndSetResourceDir("resources");
+	int bateu = 0;
+	double tempoBateu = 0;
+	// nave/jogador
+	float naveX = 400;
+	float naveY = 500;
+	float velocidade = 0.5;
 
-	// Load a texture from the resources directory
-	Texture wabbit = LoadTexture("wabbit_alpha.png");
-	
+	//obstaculo
+	float obstX = 300;
+	float obstY = 0;
+	float obstVel = 0.3;
 	// game loop
 	while (!WindowShouldClose())		// run the loop until the user presses ESCAPE or presses the Close button on the window
-	{
-		// drawing
-		BeginDrawing();
+	{	
+		if (bateu == 0){
 
+			if (IsKeyDown(KEY_D)) naveX += velocidade;
+			if (IsKeyDown(KEY_A)) naveX -= velocidade;
+			if (IsKeyDown(KEY_W)) naveY -= velocidade;
+			if (IsKeyDown(KEY_S)) naveY += velocidade;
+			if (naveX < 0) naveX = 0; //não sair da borda da esquerda
+			if (naveX > GetScreenWidth() - 40) naveX = GetScreenWidth() - 40; //não sair da borda da direita
+			if (naveY < 0) naveY = 0;
+			if (naveY > GetScreenHeight() - 40) naveY = GetScreenHeight() - 40;
+				// drawing
+			obstY += obstVel;
+			Rectangle retNave = { naveX, naveY, 40, 40 };
+			Rectangle retObst = { obstX, obstY, 30, 30 };
+			if (CheckCollisionRecs(retNave,retObst)){
+				bateu = 1; //se bateu no obstaculo
+				tempoBateu = GetTime(); //tempo ate o jogo fechar
+			}
+		}
+		BeginDrawing();
 		// Setup the back buffer for drawing (clear color and depth buffers)
 		ClearBackground(BLACK);
-
-		// draw some text using the default font
-		DrawText("Hello Raylib", 200,200,20,WHITE);
-
-		// draw our texture to the screen
-		DrawTexture(wabbit, 400, 200, WHITE);
+		DrawRectangle((int)obstX, (int)obstY, 30, 30, RED);//obstaculo
 		
+		DrawRectangle((int)naveX, (int)naveY, 40, 40, WHITE);
+		// draw some text using the default font
+		// draw our texture to the screen
 		// end the frame and get ready for the next one  (display frame, poll input, etc...)
+		if (bateu == 1) {
+			DrawText("GAME OVER", 70, 20, 40, RED);
+		}
 		EndDrawing();
+		if (bateu && GetTime() - tempoBateu > 2) 
+		break;
 	}
 
 	// cleanup
 	// unload our texture so it can be cleaned up
-	UnloadTexture(wabbit);
 
 	// destroy the window and cleanup the OpenGL context
 	CloseWindow();
