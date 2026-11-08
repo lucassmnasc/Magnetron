@@ -3,11 +3,52 @@
 #include <math.h>
 
 #include "raymath.h"
+#include "estilo.h"
+
+#define PX 4
+#define SPRITE_LARG 11
+#define SPRITE_ALT 11
+
+static const char *SPRITE[SPRITE_ALT] = {
+    ".....W.....",
+    ".....W.....",
+    "....WWW....",
+    "....WBW....",
+    "...WWBWW...",
+    "..WWWWWWW..",
+    ".RWWWWWWWR.",
+    "RRWWWWWWWRR",
+    "RR.WWWWW.RR",
+    "R..WWWWW..R",
+    "...WD.DW..."
+};
+
+static Color CorDoPixel(char c, bool apagado)
+{
+    if (apagado) return COR_ESCURO;
+    switch (c) {
+        case 'W': return COR_BRANCO;
+        case 'R': return COR_VERMELHO;
+        case 'B': return COR_AZUL;
+        default:  return COR_CINZA;
+    }
+}
+
+static void DesenharSprite(int x, int y, int p, bool apagado)
+{
+    for (int linha = 0; linha < SPRITE_ALT; linha++) {
+        for (int col = 0; col < SPRITE_LARG; col++) {
+            char c = SPRITE[linha][col];
+            if (c == '.') continue;
+            DrawRectangle(x + col * p, y + linha * p, p, p, CorDoPixel(c, apagado));
+        }
+    }
+}
 
 void NaveInit(Nave *nave)
 {
-    nave->width = 48.0f;
-    nave->height = 58.0f;
+    nave->width = SPRITE_LARG * PX;
+    nave->height = SPRITE_ALT * PX;
     nave->speed = 390.0f;
     nave->position = (Vector2){
         (GetScreenWidth() - nave->width) * 0.5f,
@@ -38,49 +79,35 @@ void NaveUpdate(Nave *nave, float deltaTime)
 
 Rectangle NaveGetBounds(const Nave *nave)
 {
+    /* hitbox só do corpo central; as asas não contam */
     return (Rectangle){
-        nave->position.x + 8.0f,
-        nave->position.y + 8.0f,
-        nave->width - 16.0f,
-        nave->height - 16.0f
+        nave->position.x + 3 * PX,
+        nave->position.y + 2 * PX,
+        5 * PX,
+        9 * PX
     };
 }
 
 void NaveDraw(const Nave *nave, bool invulnerable)
 {
-    float x = nave->position.x;
-    float y = nave->position.y;
-    float center = x + nave->width * 0.5f;
-    float flicker = 0.75f + 0.25f * sinf((float)GetTime() * 24.0f);
-    Color hull = (Color){ 218, 241, 255, 255 };
-    Color glow = (Color){ 67, 220, 255, 255 };
-
     if (invulnerable && ((int)(GetTime() * 14.0) % 2 == 0)) return;
 
-    DrawTriangle(
-        (Vector2){ center, y - 7.0f },
-        (Vector2){ x + nave->width - 3.0f, y + nave->height - 6.0f },
-        (Vector2){ center, y + nave->height - 17.0f },
-        (Color){ 35, 122, 177, 255 }
-    );
-    DrawTriangle(
-        (Vector2){ center, y - 7.0f },
-        (Vector2){ center, y + nave->height - 17.0f },
-        (Vector2){ x + 3.0f, y + nave->height - 6.0f },
-        hull
-    );
-    DrawTriangle(
-        (Vector2){ center, y + 8.0f },
-        (Vector2){ center + 6.0f, y + 33.0f },
-        (Vector2){ center - 6.0f, y + 33.0f },
-        glow
-    );
+    int x = (int)roundf(nave->position.x);
+    int y = (int)roundf(nave->position.y);
 
-    DrawTriangle(
-        (Vector2){ center - 5.0f, y + nave->height - 12.0f },
-        (Vector2){ center + 5.0f, y + nave->height - 12.0f },
-        (Vector2){ center, y + nave->height + 8.0f + flicker * 12.0f },
-        (Color){ 255, 137, 61, 220 }
-    );
-    DrawCircleV((Vector2){ center, y + nave->height - 12.0f }, 4.0f, glow);
+    DesenharSprite(x, y, PX, false);
+
+    /* chama de 2 quadros */
+    int quadro = (int)(GetTime() * 16.0) % 2;
+    int comprimento = quadro ? 2 : 1;
+    int baseY = y + SPRITE_ALT * PX;
+    DrawRectangle(x + 4 * PX, baseY, PX, comprimento * PX, COR_LARANJA);
+    DrawRectangle(x + 6 * PX, baseY, PX, comprimento * PX, COR_LARANJA);
+    DrawRectangle(x + 4 * PX, baseY, PX, PX, COR_AMARELO);
+    DrawRectangle(x + 6 * PX, baseY, PX, PX, COR_AMARELO);
+}
+
+void NaveDesenharIcone(int x, int y, int p, bool apagado)
+{
+    DesenharSprite(x, y, p, apagado);
 }

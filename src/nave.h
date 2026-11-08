@@ -14,5 +14,6 @@ void NaveInit(Nave *nave);
 void NaveUpdate(Nave *nave, float deltaTime);
 Rectangle NaveGetBounds(const Nave *nave);
 void NaveDraw(const Nave *nave, bool invulnerable);
+void NaveDesenharIcone(int x, int y, int p, bool apagado);
 
 #endif
