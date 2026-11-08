@@ -5,7 +5,22 @@ Corrida espacial - **Escape dos Asteróides**
 ## 🚀 Sobre o Jogo
 
 Em **Magnetron**, o jogador comanda uma nave espacial em pistas no espaço. Utilizando mecânicas em 2D, a nave precisa ir desviando dos asteróides ao longo do caminho, eles vem de forma aleatória conforme vão passando as fases do jogo. O objetivo é simples: o jogador precisa ir desviando dos asteróides pelo máximo de fases que conseguir, os 5 primeiros aparecerão na tela de "Fim de Jogo". O jogo é inspirado em um design retrô, com uma pegada divertida e fácil de jogar por qualquer um! **Entre e se divirta**!
+
+## 👥 Equipe
+
+<div align="center">
+
+| Membro | E-mail |
+| :---: | :---: |
+| Arthur Santana de Andrade | **asa4@cesar.school** |
+| Lucas Silva Moreira do Nascimento | **lsmn@cesar.school** |
+| Matheus Trajano de Freitas | **mtf@cesar.school** |
+
+</div>
+
 ## 🎮 Como Jogar
+
+<div align="center">
 
 | Tecla | Ação |
 |-------|------|
@@ -14,6 +29,8 @@ Em **Magnetron**, o jogador comanda uma nave espacial em pistas no espaço. Util
 | `S` | [Mover para baixo] |
 | `D` | [Mover para a direita] |
 | `ESC` | Sair do jogo |
+
+</div>
 
 ## 🛠️ Tecnologias e Requisitos
 
@@ -49,13 +66,6 @@ Magnetron/
 └── src/
     └── main.c
 ```
-
-
-## 👥 Equipe
-
-- Lucas Silva Moreira do Nascimento
-- Matheus Trajano de Freitas
-- Arthur Santana de Andrade
 
 ## 📄 Licenças
 
