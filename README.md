@@ -151,6 +151,8 @@ make config=release_x64    # ou release_arm64 no Apple Silicon
 | `A` | Mover para a esquerda |
 | `S` | Mover para baixo |
 | `D` | Mover para a direita |
+| `P` | Pressione para pausar |
+| `ENTER ou ESPAÇO` | Pressione para iniciar o jogo |
 | `R` | Pressione para jogar novamente |
 | `ESC` | Sair do jogo |
 
