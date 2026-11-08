@@ -9,23 +9,22 @@
 #define COLUNAS_CAMPO 6
 
 typedef struct Obstaculo {
-    Rectangle bounds;
-    float rotationSpeed;
+    Rectangle limites;
     int variante;
-    struct Obstaculo *prox;
+    struct Obstaculo *proximo;
 } Obstaculo;
 
 typedef struct CampoAsteroides {
     Obstaculo *inicio;
     int quantidade;
     unsigned int ocupacao[LINHAS_CAMPO][COLUNAS_CAMPO];
-    float spawnTimer;
-    float elapsed;
+    float tempoNascimento;
+    float tempoDecorrido;
 } CampoAsteroides;
 
-void ObstaculosInit(CampoAsteroides *campo);
-void ObstaculosReset(CampoAsteroides *campo);
-bool ObstaculosUpdate(CampoAsteroides *campo, float deltaTime);
-void ObstaculosDraw(const CampoAsteroides *campo);
+void ObstaculosInicializar(CampoAsteroides *campo);
+void ObstaculosReiniciar(CampoAsteroides *campo);
+bool ObstaculosAtualizar(CampoAsteroides *campo, float deltaTempo);
+void ObstaculosDesenhar(const CampoAsteroides *campo);
 
 #endif

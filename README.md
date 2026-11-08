@@ -19,7 +19,7 @@ verifica os impactos.
   agrupam os dados do jogo; as funções recebem ponteiros para atualizar esses
   dados sem copiar as estruturas.
 - **Alocação dinâmica e lista encadeada:** cada asteroide é criado com `malloc`
-  e ligado ao próximo pelo campo `prox`. Asteroides que saem da tela ou são
+  e ligado ao próximo pelo campo `proximo`. Asteroides que saem da tela ou são
   reiniciados são liberados com `free`.
 - **Matriz:** `ocupacao[8][6]` representa oito setores verticais e seis colunas
   do campo. Ela conta asteroides por setor e evita gerar um novo asteroide em
@@ -35,6 +35,7 @@ verifica os impactos.
 | `A` / `←` | Mover para a esquerda |
 | `S` / `↓` | Mover para baixo |
 | `D` / `→` | Mover para a direita |
+| `ENTER` / `ESPAÇO` | Começar na tela inicial |
 | `P` | Pausar / continuar |
 | `R` | Reiniciar após o fim de jogo |
 | `ESC` | Sair do jogo |

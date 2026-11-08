@@ -12,8 +12,8 @@ static bool RecordesSalvar(const Placar *placar)
     if (arquivo == NULL) return false;
 
     bool sucesso = true;
-    for (int i = 0; i < placar->quantidade; i++) {
-        if (fprintf(arquivo, "%d\n", placar->pontuacoes[i]) < 0) {
+    for (int indice = 0; indice < placar->quantidade; indice++) {
+        if (fprintf(arquivo, "%d\n", placar->pontuacoes[indice]) < 0) {
             sucesso = false;
             break;
         }
@@ -53,14 +53,14 @@ bool RecordesCarregar(Placar *placar)
     if (fclose(arquivo) != 0) sucesso = false;
     if (!sucesso) return false;
 
-    for (int i = 1; i < placar->quantidade; i++) {
-        int valor = placar->pontuacoes[i];
-        int j = i;
-        while (j > 0 && placar->pontuacoes[j - 1] < valor) {
-            placar->pontuacoes[j] = placar->pontuacoes[j - 1];
-            j--;
+    for (int indice = 1; indice < placar->quantidade; indice++) {
+        int valor = placar->pontuacoes[indice];
+        int posicao = indice;
+        while (posicao > 0 && placar->pontuacoes[posicao - 1] < valor) {
+            placar->pontuacoes[posicao] = placar->pontuacoes[posicao - 1];
+            posicao--;
         }
-        placar->pontuacoes[j] = valor;
+        placar->pontuacoes[posicao] = valor;
     }
 
     return true;

@@ -4,16 +4,16 @@
 #include "raylib.h"
 
 typedef struct Nave {
-    Vector2 position;
-    float width;
-    float height;
-    float speed;
+    Vector2 posicao;
+    float largura;
+    float altura;
+    float velocidade;
 } Nave;
 
-void NaveInit(Nave *nave);
-void NaveUpdate(Nave *nave, float deltaTime);
-Rectangle NaveGetBounds(const Nave *nave);
-void NaveDraw(const Nave *nave, bool invulnerable);
-void NaveDesenharIcone(int x, int y, int p, bool apagado);
+void NaveInicializar(Nave *nave);
+void NaveAtualizar(Nave *nave, float deltaTempo);
+Rectangle NaveObterLimites(const Nave *nave);
+void NaveDesenhar(const Nave *nave, bool invulneravel);
+void NaveDesenharIcone(int posicaoX, int posicaoY, int tamanhoPixel, bool apagado);
 
 #endif
