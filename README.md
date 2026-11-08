@@ -1,10 +1,10 @@
 # Magnetron
 
-Corrida espacial
+Corrida espacial - **Escape dos Asteróides**
 
 ## 🚀 Sobre o Jogo
 
-Em **Magnetron**, o jogador comanda uma nave espacial em pistas futuristas. Utilizando mecânicas em 2D
+Em **Magnetron**, o jogador comanda uma nave espacial em pistas no espaço. Utilizando mecânicas em 2D, a nave precisa ir desviando dos asteróides ao longo do caminho, eles vem de forma aleatória conforme vão passando as fases do jogo. O objetivo é simples: o jogador precisa ir desviando dos asteróides pelo máximo de fases que conseguir, os 5 primeiros aparecerão na tela de "Fim de Jogo". O jogo é inspirado em um design retrô, com uma pegada divertida e fácil de jogar por qualquer um! **Entre e se divirta**!
 ## 🎮 Como Jogar
 
 | Tecla | Ação |
