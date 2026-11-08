@@ -118,8 +118,16 @@ endif
 GENERATED :=
 OBJECTS :=
 
+GENERATED += $(OBJDIR)/colisao.o
 GENERATED += $(OBJDIR)/main.o
+GENERATED += $(OBJDIR)/nave.o
+GENERATED += $(OBJDIR)/obstaculos.o
+GENERATED += $(OBJDIR)/recordes.o
+OBJECTS += $(OBJDIR)/colisao.o
 OBJECTS += $(OBJDIR)/main.o
+OBJECTS += $(OBJDIR)/nave.o
+OBJECTS += $(OBJDIR)/obstaculos.o
+OBJECTS += $(OBJDIR)/recordes.o
 
 # Rules
 # #############################################
@@ -183,7 +191,19 @@ endif
 # File Rules
 # #############################################
 
+$(OBJDIR)/colisao.o: src/colisao.c
+	@echo "$(notdir $<)"
+	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/main.o: src/main.c
+	@echo "$(notdir $<)"
+	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/nave.o: src/nave.c
+	@echo "$(notdir $<)"
+	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/obstaculos.o: src/obstaculos.c
+	@echo "$(notdir $<)"
+	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/recordes.o: src/recordes.c
 	@echo "$(notdir $<)"
 	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 
