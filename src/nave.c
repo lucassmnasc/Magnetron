@@ -4,6 +4,7 @@
 
 #include "raymath.h"
 #include "estilo.h"
+#include "sons.h"
 
 #define TAMANHO_PIXEL 4
 #define LARGURA_DESENHO 11
@@ -72,6 +73,13 @@ void NaveAtualizar(Nave *nave, float deltaTempo)
             nave->posicao,
             Vector2Scale(direcao, nave->velocidade * deltaTempo)
         );
+
+        static float timerMotor = 0.0f;
+        timerMotor -= deltaTempo;
+        if (timerMotor <= 0.0f) {
+            TocarSomNave();
+            timerMotor = 0.25f;
+        }
     }
 
     nave->posicao.x = Clamp(nave->posicao.x, 12.0f,

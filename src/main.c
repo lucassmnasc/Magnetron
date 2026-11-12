@@ -11,6 +11,7 @@
 #include "obstaculos.h"
 #include "recordes.h"
 #include "estilo.h"
+#include "sons.h"
 
 #define LARGURA_INICIAL 960
 #define ALTURA_INICIAL 640
@@ -185,6 +186,7 @@ int main(void)
 {
     SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI | FLAG_WINDOW_RESIZABLE);
     InitWindow(LARGURA_INICIAL, ALTURA_INICIAL, "Magnetron");
+    InicializarSons();
     SetWindowMinSize(760, 360);
     SetTargetFPS(60);
     const char *caminhoFonte = "resources/Press_Start_2P/PressStart2P-Regular.ttf";
@@ -195,6 +197,7 @@ int main(void)
     fonte = LoadFontEx(caminhoFonte, 16, NULL, 0);
     if (!IsFontValid(fonte)) {
         fprintf(stderr, "Erro ao carregar a fonte do jogo.\n");
+        FinalizarSons();
         CloseWindow();
         return EXIT_FAILURE;
     }
@@ -205,6 +208,7 @@ int main(void)
     if (!RecordesCarregar(&placar)) {
         fprintf(stderr, "Erro ao ler o arquivo de recordes: %s\n", ARQUIVO_RECORDES);
         UnloadFont(fonte);
+        FinalizarSons();
         CloseWindow();
         return EXIT_FAILURE;
     }
@@ -253,6 +257,7 @@ int main(void)
 
             if (tempoInvulneravel <= 0.0f && ColisaoNaveAsteroides(&nave, &campo)) {
                 vidas--;
+                TocarSomPerdeuVida();
                 tempoInvulneravel = 1.35f;
                 if (vidas <= 0) {
                     fimDeJogo = true;
@@ -308,6 +313,7 @@ int main(void)
 
     ObstaculosReiniciar(&campo);
     UnloadFont(fonte);
+    FinalizarSons();
     CloseWindow();
     return erroDeMemoria ? EXIT_FAILURE : EXIT_SUCCESS;
 }

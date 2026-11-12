@@ -1,6 +1,7 @@
 #include "obstaculos.h"
 
 #include "estilo.h"
+#include "sons.h"
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
@@ -55,6 +56,7 @@ static bool GerarObstaculo(CampoAsteroides *campo)
     campo->inicio = obstaculo;
     campo->quantidade++;
     campo->ocupacao[0][coluna]++;
+    TocarSomMeteoro();
     return true;
 }
 

@@ -123,11 +123,13 @@ GENERATED += $(OBJDIR)/main.o
 GENERATED += $(OBJDIR)/nave.o
 GENERATED += $(OBJDIR)/obstaculos.o
 GENERATED += $(OBJDIR)/recordes.o
+GENERATED += $(OBJDIR)/sons.o
 OBJECTS += $(OBJDIR)/colisao.o
 OBJECTS += $(OBJDIR)/main.o
 OBJECTS += $(OBJDIR)/nave.o
 OBJECTS += $(OBJDIR)/obstaculos.o
 OBJECTS += $(OBJDIR)/recordes.o
+OBJECTS += $(OBJDIR)/sons.o
 
 # Rules
 # #############################################
@@ -204,6 +206,9 @@ $(OBJDIR)/obstaculos.o: src/obstaculos.c
 	@echo "$(notdir $<)"
 	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/recordes.o: src/recordes.c
+	@echo "$(notdir $<)"
+	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/sons.o: src/sons.c
 	@echo "$(notdir $<)"
 	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 
