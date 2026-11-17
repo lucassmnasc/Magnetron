@@ -100,3 +100,107 @@ static void DesenharCenario(float tempoAnimacao)
             tamanho, tamanho, cor);
     }
 }
+
+static void DesenharHUD(int pontuacao, int recorde, int vidas, float tempoDecorrido)
+{
+    int larguraTela = GetScreenWidth();
+    DrawRectangle(0, 0, larguraTela, 64, BLACK);
+    DrawRectangle(0, 62, larguraTela, 2, COR_BRANCO);
+
+    Texto("PONTOS", 24, 8, 16, COR_VERMELHO);
+    Texto(TextFormat("%06i", pontuacao), 24, 30, 24, COR_BRANCO);
+
+    TextoCentro("RECORDE", larguraTela / 2, 8, 16, COR_AMARELO);
+    TextoCentro(TextFormat("%06i", recorde), larguraTela / 2, 30, 24, COR_BRANCO);
+
+    int larguraGrupoVidas = (TOTAL_VIDAS - 1) * 30 + LARGURA_ICONE_VIDA;
+    int centroVidas = larguraTela - 32 - larguraGrupoVidas / 2;
+    TextoCentro("VIDAS", centroVidas, 8, 16, COR_AZUL);
+    for (int indiceVida = 0; indiceVida < TOTAL_VIDAS; indiceVida++) {
+        int posicaoX = larguraTela - 24 - (TOTAL_VIDAS - indiceVida) * 30;
+        NaveDesenharIcone(posicaoX, 30, 2, indiceVida >= vidas);
+    }
+
+    Texto(TextFormat("FASE %02i", 1 + (int)(tempoDecorrido / 20.0f)),
+        16, GetScreenHeight() - 28, 16, COR_AMARELO);
+    Texto("P = PAUSAR", larguraTela - 16 - LarguraTexto("P = PAUSAR", 16),
+        GetScreenHeight() - 28, 16, COR_CINZA);
+}
+
+static void DesenharMelhoresDistancias(const Placar *placar, int centroX, int centroY)
+{
+    const int larguraPainel = 420;
+    const int alturaPainel = 160;
+    Rectangle painel = {
+        (float)(centroX - larguraPainel / 2),
+        (float)(centroY - alturaPainel / 2),
+        (float)larguraPainel,
+        (float)alturaPainel
+    };
+
+    DrawRectangleRec(painel, (Color){ 24, 24, 32, 255 });
+    DrawRectangleLinesEx(painel, 2.0f, COR_CINZA);
+    TextoCentro("MELHORES DISTANCIAS", centroX, (int)painel.y + 8, 12, COR_AMARELO);
+
+    if (placar->quantidade == 0) {
+        TextoCentro("AINDA SEM RECORDES", centroX, (int)painel.y + 72, 12, COR_CINZA);
+        return;
+    }
+
+    for (int indice = 0; indice < placar->quantidade; indice++) {
+        TextoCentro(TextFormat("%i. %06i", indice + 1, placar->pontuacoes[indice]),
+            centroX, (int)painel.y + 34 + indice * 23, 12, COR_BRANCO);
+    }
+}
+
+static void DesenharTelaInicial(const Placar *placar, int centroX, int centroY)
+{
+    Painel(centroX, centroY, 620, 300);
+    TextoCentro("MAGNETRON", centroX, centroY - 112, 32, COR_AZUL);
+    TextoCentro("CORRIDA ESPACIAL", centroX, centroY - 66, 16, COR_AMARELO);
+    TextoCentro("DESVIE DOS ASTEROIDES E TENTE IR MAIS LONGE",
+        centroX, centroY - 20, 12, COR_BRANCO);
+    TextoCentro("WASD OU SETAS PARA MOVER", centroX, centroY + 14, 12, COR_CINZA);
+    TextoCentro("VOCE TEM TRES VIDAS", centroX, centroY + 42, 12, COR_CINZA);
+
+    int recorde = placar->quantidade > 0 ? placar->pontuacoes[0] : 0;
+    TextoCentro(TextFormat("RECORDE: %06i", recorde),
+        centroX, centroY + 72, 12, COR_AMARELO);
+    if (Piscar()) TextoCentro("ENTER PARA COMECAR",
+        centroX, centroY + 112, 12, COR_BRANCO);
+}
+
+static void ReiniciarJogo(Nave *nave, CampoAsteroides *campo, float *tempoDecorrido,
+    float *tempoInvulneravel, int *vidas, bool *fimDeJogo, bool *erroAoSalvarRecordes)
+{
+    NaveInicializar(nave);
+    ObstaculosReiniciar(campo);
+    *tempoDecorrido = 0.0f;
+    *tempoInvulneravel = 0.0f;
+    *vidas = TOTAL_VIDAS;
+    *fimDeJogo = false;
+    *erroAoSalvarRecordes = false;
+}
+
+int main(void)
+{
+    SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI | FLAG_WINDOW_RESIZABLE);
+    InitWindow(LARGURA_INICIAL, ALTURA_INICIAL, "Magnetron");
+    InicializarSons();
+    SetWindowMinSize(760, 360);
+    SetTargetFPS(60);
+    const char *caminhoFonte = "resources/Press_Start_2P/PressStart2P-Regular.ttf";
+    if (!FileExists(caminhoFonte)) {
+        caminhoFonte = TextFormat("%s../../resources/Press_Start_2P/PressStart2P-Regular.ttf",
+            GetApplicationDirectory());
+    }
+    fonte = LoadFontEx(caminhoFonte, 16, NULL, 0);
+    if (!IsFontValid(fonte)) {
+        fprintf(stderr, "Erro ao carregar a fonte do jogo.\n");
+        FinalizarSons();
+        CloseWindow();
+        return EXIT_FAILURE;
+    }
+    SetTextureFilter(fonte.texture, TEXTURE_FILTER_POINT);
+    srand((unsigned int)time(NULL));
+}

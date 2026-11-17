@@ -42,69 +42,69 @@ endef
 
 ifeq ($(config),debug_x64)
 TARGETDIR = bin/Debug
-TARGET = $(TARGETDIR)/Magnetron.exe
+TARGET = $(TARGETDIR)/Magnetron
 OBJDIR = obj/x64/Debug/Magnetron
-DEFINES += -DDEBUG -DPLATFORM_DESKTOP -DGRAPHICS_API_OPENGL_33 -D_WIN32
+DEFINES += -DDEBUG -DPLATFORM_DESKTOP -DGRAPHICS_API_OPENGL_33 -D_GLFW_X11
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -Wshadow -g -std=c17
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -Wshadow -g -std=c++20
-LIBS += bin/Debug/raylib.lib -lwinmm -lgdi32 -lopengl32
-LDDEPS += bin/Debug/raylib.lib
-ALL_LDFLAGS += $(LDFLAGS) -Lbin/Debug -L/usr/lib64 -m64
+LIBS += bin/Debug/libraylib.a -lpthread -lm -ldl -lrt -lX11
+LDDEPS += bin/Debug/libraylib.a
+ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64
 
 else ifeq ($(config),debug_x86)
 TARGETDIR = bin/Debug
-TARGET = $(TARGETDIR)/Magnetron.exe
+TARGET = $(TARGETDIR)/Magnetron
 OBJDIR = obj/x86/Debug/Magnetron
-DEFINES += -DDEBUG -DPLATFORM_DESKTOP -DGRAPHICS_API_OPENGL_33 -D_WIN32
+DEFINES += -DDEBUG -DPLATFORM_DESKTOP -DGRAPHICS_API_OPENGL_33 -D_GLFW_X11
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m32 -Wshadow -g -std=c17
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m32 -Wshadow -g -std=c++20
-LIBS += bin/Debug/raylib.lib -lwinmm -lgdi32 -lopengl32
-LDDEPS += bin/Debug/raylib.lib
-ALL_LDFLAGS += $(LDFLAGS) -Lbin/Debug -L/usr/lib32 -m32
+LIBS += bin/Debug/libraylib.a -lpthread -lm -ldl -lrt -lX11
+LDDEPS += bin/Debug/libraylib.a
+ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib32 -m32
 
 else ifeq ($(config),debug_arm64)
 TARGETDIR = bin/Debug
-TARGET = $(TARGETDIR)/Magnetron.exe
+TARGET = $(TARGETDIR)/Magnetron
 OBJDIR = obj/ARM64/Debug/Magnetron
-DEFINES += -DDEBUG -DPLATFORM_DESKTOP -DGRAPHICS_API_OPENGL_33 -D_WIN32
+DEFINES += -DDEBUG -DPLATFORM_DESKTOP -DGRAPHICS_API_OPENGL_33 -D_GLFW_X11
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -Wshadow -g -std=c17
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -Wshadow -g -std=c++20
-LIBS += bin/Debug/raylib.lib -lwinmm -lgdi32 -lopengl32
-LDDEPS += bin/Debug/raylib.lib
-ALL_LDFLAGS += $(LDFLAGS) -Lbin/Debug
+LIBS += bin/Debug/libraylib.a -lpthread -lm -ldl -lrt -lX11
+LDDEPS += bin/Debug/libraylib.a
+ALL_LDFLAGS += $(LDFLAGS)
 
 else ifeq ($(config),release_x64)
 TARGETDIR = bin/Release
-TARGET = $(TARGETDIR)/Magnetron.exe
+TARGET = $(TARGETDIR)/Magnetron
 OBJDIR = obj/x64/Release/Magnetron
-DEFINES += -DNDEBUG -DPLATFORM_DESKTOP -DGRAPHICS_API_OPENGL_33 -D_WIN32
-ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -Wshadow -O2 -std=c17 -Wl,--subsystem,windows
-ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -Wshadow -O2 -std=c++20 -Wl,--subsystem,windows
-LIBS += bin/Release/raylib.lib -lwinmm -lgdi32 -lopengl32
-LDDEPS += bin/Release/raylib.lib
-ALL_LDFLAGS += $(LDFLAGS) -Lbin/Release -L/usr/lib64 -m64 -mwindows -s
+DEFINES += -DNDEBUG -DPLATFORM_DESKTOP -DGRAPHICS_API_OPENGL_33 -D_GLFW_X11
+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -Wshadow -O2 -std=c17
+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -Wshadow -O2 -std=c++20
+LIBS += bin/Release/libraylib.a -lpthread -lm -ldl -lrt -lX11
+LDDEPS += bin/Release/libraylib.a
+ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -s
 
 else ifeq ($(config),release_x86)
 TARGETDIR = bin/Release
-TARGET = $(TARGETDIR)/Magnetron.exe
+TARGET = $(TARGETDIR)/Magnetron
 OBJDIR = obj/x86/Release/Magnetron
-DEFINES += -DNDEBUG -DPLATFORM_DESKTOP -DGRAPHICS_API_OPENGL_33 -D_WIN32
-ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m32 -Wshadow -O2 -std=c17 -Wl,--subsystem,windows
-ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m32 -Wshadow -O2 -std=c++20 -Wl,--subsystem,windows
-LIBS += bin/Release/raylib.lib -lwinmm -lgdi32 -lopengl32
-LDDEPS += bin/Release/raylib.lib
-ALL_LDFLAGS += $(LDFLAGS) -Lbin/Release -L/usr/lib32 -m32 -mwindows -s
+DEFINES += -DNDEBUG -DPLATFORM_DESKTOP -DGRAPHICS_API_OPENGL_33 -D_GLFW_X11
+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m32 -Wshadow -O2 -std=c17
+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m32 -Wshadow -O2 -std=c++20
+LIBS += bin/Release/libraylib.a -lpthread -lm -ldl -lrt -lX11
+LDDEPS += bin/Release/libraylib.a
+ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib32 -m32 -s
 
 else ifeq ($(config),release_arm64)
 TARGETDIR = bin/Release
-TARGET = $(TARGETDIR)/Magnetron.exe
+TARGET = $(TARGETDIR)/Magnetron
 OBJDIR = obj/ARM64/Release/Magnetron
-DEFINES += -DNDEBUG -DPLATFORM_DESKTOP -DGRAPHICS_API_OPENGL_33 -D_WIN32
-ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -Wshadow -O2 -std=c17 -Wl,--subsystem,windows
-ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -Wshadow -O2 -std=c++20 -Wl,--subsystem,windows
-LIBS += bin/Release/raylib.lib -lwinmm -lgdi32 -lopengl32
-LDDEPS += bin/Release/raylib.lib
-ALL_LDFLAGS += $(LDFLAGS) -Lbin/Release -mwindows -s
+DEFINES += -DNDEBUG -DPLATFORM_DESKTOP -DGRAPHICS_API_OPENGL_33 -D_GLFW_X11
+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -Wshadow -O2 -std=c17
+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -Wshadow -O2 -std=c++20
+LIBS += bin/Release/libraylib.a -lpthread -lm -ldl -lrt -lX11
+LDDEPS += bin/Release/libraylib.a
+ALL_LDFLAGS += $(LDFLAGS) -s
 
 endif
 
@@ -119,7 +119,9 @@ GENERATED :=
 OBJECTS :=
 
 GENERATED += $(OBJDIR)/main.o
+GENERATED += $(OBJDIR)/obstaculos.o
 OBJECTS += $(OBJDIR)/main.o
+OBJECTS += $(OBJDIR)/obstaculos.o
 
 # Rules
 # #############################################
@@ -157,7 +159,7 @@ ifeq (posix,$(SHELLTYPE))
 	$(SILENT) rm -rf $(OBJDIR)
 else
 	$(SILENT) if exist $(subst /,\\,$(TARGET)) del $(subst /,\\,$(TARGET))
-	$(SILENT) $(foreach f,$(subst /,\\,$(GENERATED)),if exist $(f) del /s /q $(f) >nul &)
+	$(SILENT) if exist $(subst /,\\,$(GENERATED)) del /s /q $(subst /,\\,$(GENERATED))
 	$(SILENT) if exist $(subst /,\\,$(OBJDIR)) rmdir /s /q $(subst /,\\,$(OBJDIR))
 endif
 
@@ -184,6 +186,9 @@ endif
 # #############################################
 
 $(OBJDIR)/main.o: src/main.c
+	@echo "$(notdir $<)"
+	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/obstaculos.o: src/obstaculos.c
 	@echo "$(notdir $<)"
 	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 
