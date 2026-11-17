@@ -203,4 +203,117 @@ int main(void)
     }
     SetTextureFilter(fonte.texture, TEXTURE_FILTER_POINT);
     srand((unsigned int)time(NULL));
+
+    Placar placar;
+    if (!RecordesCarregar(&placar)) {
+        fprintf(stderr, "Erro ao ler o arquivo de recordes: %s\n", ARQUIVO_RECORDES);
+        UnloadFont(fonte);
+        FinalizarSons();
+        CloseWindow();
+        return EXIT_FAILURE;
+    }
+
+    InicializarEstrelas();
+
+    Nave nave;
+    CampoAsteroides campo;
+    NaveInicializar(&nave);
+    ObstaculosInicializar(&campo);
+
+    int vidas = TOTAL_VIDAS;
+    float tempoDecorrido = 0.0f;
+    float tempoInvulneravel = 0.0f;
+    bool fimDeJogo = false;
+    bool pausado = false;
+    bool telaInicial = true;
+    bool erroAoSalvarRecordes = false;
+    bool erroDeMemoria = false;
+
+    while (!WindowShouldClose()) {
+        float deltaTempo = fminf(GetFrameTime(), 0.05f);
+        AtualizarEstrelas(deltaTempo);
+
+        if (telaInicial && (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_SPACE))) {
+            telaInicial = false;
+        }
+        if (IsKeyPressed(KEY_P) && !telaInicial && !fimDeJogo) pausado = !pausado;
+        if (fimDeJogo && IsKeyPressed(KEY_R)) {
+            ReiniciarJogo(&nave, &campo, &tempoDecorrido, &tempoInvulneravel,
+                &vidas, &fimDeJogo, &erroAoSalvarRecordes);
+            pausado = false;
+            telaInicial = false;
+        }
+
+        if (!telaInicial && !fimDeJogo && !pausado) {
+            tempoDecorrido += deltaTempo;
+            if (tempoInvulneravel > 0.0f) tempoInvulneravel -= deltaTempo;
+
+            NaveAtualizar(&nave, deltaTempo);
+            if (!ObstaculosAtualizar(&campo, deltaTempo)) {
+                fprintf(stderr, "Erro: nao foi possivel alocar memoria para um asteroide.\n");
+                erroDeMemoria = true;
+                break;
+            }
+
+            if (tempoInvulneravel <= 0.0f && ColisaoNaveAsteroides(&nave, &campo)) {
+                vidas--;
+                TocarSomPerdeuVida();
+                tempoInvulneravel = 1.35f;
+                if (vidas <= 0) {
+                    fimDeJogo = true;
+                    if (!RecordesRegistrar(&placar, (int)(tempoDecorrido * 12.0f))) {
+                        fprintf(stderr, "Erro ao salvar o arquivo de recordes: %s\n",
+                            ARQUIVO_RECORDES);
+                        erroAoSalvarRecordes = true;
+                    }
+                }
+            }
+        }
+
+        int pontuacao = (int)(tempoDecorrido * 12.0f);
+        int recorde = placar.quantidade > 0 ? placar.pontuacoes[0] : 0;
+
+        BeginDrawing();
+        DesenharCenario((float)GetTime());
+
+        int centroX = GetScreenWidth() / 2;
+        int centroY = GetScreenHeight() / 2;
+
+        if (telaInicial) {
+            NaveDesenhar(&nave, false);
+            DesenharTelaInicial(&placar, centroX, centroY);
+        } else {
+            ObstaculosDesenhar(&campo);
+            NaveDesenhar(&nave, tempoInvulneravel > 0.0f);
+            DesenharHUD(pontuacao, recorde, vidas, tempoDecorrido);
+
+            if (pausado) {
+                Painel(centroX, centroY, 520, 200);
+                TextoCentro("PAUSADO", centroX, centroY - 60, 32, COR_AMARELO);
+                TextoCentro("WASD / SETAS = MOVER", centroX, centroY, 16, COR_BRANCO);
+                if (Piscar()) TextoCentro("APERTE P", centroX, centroY + 50, 16, COR_BRANCO);
+            } else if (fimDeJogo) {
+                Painel(centroX, centroY, 560, 340);
+                TextoCentro("FIM DE JOGO", centroX, centroY - 150, 32, COR_VERMELHO);
+                TextoCentro(TextFormat("DISTANCIA %06i", pontuacao),
+                    centroX, centroY - 102, 16, COR_BRANCO);
+                DesenharMelhoresDistancias(&placar, centroX, centroY + 6);
+                if (Piscar()) TextoCentro("APERTE R PARA JOGAR",
+                    centroX, centroY + 132, 12, COR_AMARELO);
+                if (erroAoSalvarRecordes) TextoCentro("ERRO AO SALVAR RECORDES",
+                    centroX, centroY + 151, 10, COR_VERMELHO);
+            }
+        }
+
+        for (int posicaoY = 0; posicaoY < GetScreenHeight(); posicaoY += 3) {
+            DrawRectangle(0, posicaoY, GetScreenWidth(), 1, (Color){ 0, 0, 0, 50 });
+        }
+        EndDrawing();
+    }
+
+    ObstaculosReiniciar(&campo);
+    UnloadFont(fonte);
+    FinalizarSons();
+    CloseWindow();
+    return erroDeMemoria ? EXIT_FAILURE : EXIT_SUCCESS;
 }
