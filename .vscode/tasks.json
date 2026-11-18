@@ -119,7 +119,7 @@
                 "command": "./premake5"
             },
             "osx": {
-                "command": "premake5.osx"
+                "command": "./premake5.osx"
             },
             "group": "build",
             "dependsOn": ["Generate compile_commands.json"]
@@ -141,7 +141,7 @@
                 "command": "./premake5"
             },
             "osx": {
-                "command": "premake5.osx"
+                "command": "./premake5.osx"
             },
             "group": "build",
             "problemMatcher": []

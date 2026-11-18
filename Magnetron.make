@@ -47,7 +47,7 @@ OBJDIR = obj/x64/Debug/Magnetron
 DEFINES += -DDEBUG -DPLATFORM_DESKTOP -DGRAPHICS_API_OPENGL_33
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -Wshadow -g -std=c17 -Wno-deprecated-declarations
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -Wshadow -g -std=c++20 -Wno-deprecated-declarations
-LIBS += bin/Debug/libraylib.a -framework OpenGL -framework Cocoa -framework IOKit -framework CoreFoundation -framework CoreAudio -framework CoreVideo -framework AudioToolbox
+LIBS += bin/Debug/libraylib.a -framework OpenGL -framework Cocoa -framework IOKit -framework CoreFoundation -framework CoreAudio -framework CoreVideo -framework AudioToolbox -framework QuartzCore
 LDDEPS += bin/Debug/libraylib.a
 ALL_LDFLAGS += $(LDFLAGS) -m64
 
@@ -58,7 +58,7 @@ OBJDIR = obj/x86/Debug/Magnetron
 DEFINES += -DDEBUG -DPLATFORM_DESKTOP -DGRAPHICS_API_OPENGL_33
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m32 -Wshadow -g -std=c17 -Wno-deprecated-declarations
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m32 -Wshadow -g -std=c++20 -Wno-deprecated-declarations
-LIBS += bin/Debug/libraylib.a -framework OpenGL -framework Cocoa -framework IOKit -framework CoreFoundation -framework CoreAudio -framework CoreVideo -framework AudioToolbox
+LIBS += bin/Debug/libraylib.a -framework OpenGL -framework Cocoa -framework IOKit -framework CoreFoundation -framework CoreAudio -framework CoreVideo -framework AudioToolbox -framework QuartzCore
 LDDEPS += bin/Debug/libraylib.a
 ALL_LDFLAGS += $(LDFLAGS) -m32
 
@@ -69,7 +69,7 @@ OBJDIR = obj/ARM64/Debug/Magnetron
 DEFINES += -DDEBUG -DPLATFORM_DESKTOP -DGRAPHICS_API_OPENGL_33
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -Wshadow -g -std=c17 -Wno-deprecated-declarations
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -Wshadow -g -std=c++20 -Wno-deprecated-declarations
-LIBS += bin/Debug/libraylib.a -framework OpenGL -framework Cocoa -framework IOKit -framework CoreFoundation -framework CoreAudio -framework CoreVideo -framework AudioToolbox
+LIBS += bin/Debug/libraylib.a -framework OpenGL -framework Cocoa -framework IOKit -framework CoreFoundation -framework CoreAudio -framework CoreVideo -framework AudioToolbox -framework QuartzCore
 LDDEPS += bin/Debug/libraylib.a
 ALL_LDFLAGS += $(LDFLAGS)
 
@@ -80,7 +80,7 @@ OBJDIR = obj/x64/Release/Magnetron
 DEFINES += -DNDEBUG -DPLATFORM_DESKTOP -DGRAPHICS_API_OPENGL_33
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -Wshadow -O2 -std=c17 -Wno-deprecated-declarations
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -Wshadow -O2 -std=c++20 -Wno-deprecated-declarations
-LIBS += bin/Release/libraylib.a -framework OpenGL -framework Cocoa -framework IOKit -framework CoreFoundation -framework CoreAudio -framework CoreVideo -framework AudioToolbox
+LIBS += bin/Release/libraylib.a -framework OpenGL -framework Cocoa -framework IOKit -framework CoreFoundation -framework CoreAudio -framework CoreVideo -framework AudioToolbox -framework QuartzCore
 LDDEPS += bin/Release/libraylib.a
 ALL_LDFLAGS += $(LDFLAGS) -m64
 
@@ -91,7 +91,7 @@ OBJDIR = obj/x86/Release/Magnetron
 DEFINES += -DNDEBUG -DPLATFORM_DESKTOP -DGRAPHICS_API_OPENGL_33
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m32 -Wshadow -O2 -std=c17 -Wno-deprecated-declarations
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m32 -Wshadow -O2 -std=c++20 -Wno-deprecated-declarations
-LIBS += bin/Release/libraylib.a -framework OpenGL -framework Cocoa -framework IOKit -framework CoreFoundation -framework CoreAudio -framework CoreVideo -framework AudioToolbox
+LIBS += bin/Release/libraylib.a -framework OpenGL -framework Cocoa -framework IOKit -framework CoreFoundation -framework CoreAudio -framework CoreVideo -framework AudioToolbox -framework QuartzCore
 LDDEPS += bin/Release/libraylib.a
 ALL_LDFLAGS += $(LDFLAGS) -m32
 
@@ -102,7 +102,7 @@ OBJDIR = obj/ARM64/Release/Magnetron
 DEFINES += -DNDEBUG -DPLATFORM_DESKTOP -DGRAPHICS_API_OPENGL_33
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -Wshadow -O2 -std=c17 -Wno-deprecated-declarations
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -Wshadow -O2 -std=c++20 -Wno-deprecated-declarations
-LIBS += bin/Release/libraylib.a -framework OpenGL -framework Cocoa -framework IOKit -framework CoreFoundation -framework CoreAudio -framework CoreVideo -framework AudioToolbox
+LIBS += bin/Release/libraylib.a -framework OpenGL -framework Cocoa -framework IOKit -framework CoreFoundation -framework CoreAudio -framework CoreVideo -framework AudioToolbox -framework QuartzCore
 LDDEPS += bin/Release/libraylib.a
 ALL_LDFLAGS += $(LDFLAGS)
 
@@ -118,10 +118,18 @@ endif
 GENERATED :=
 OBJECTS :=
 
+GENERATED += $(OBJDIR)/colisao.o
 GENERATED += $(OBJDIR)/main.o
+GENERATED += $(OBJDIR)/nave.o
 GENERATED += $(OBJDIR)/obstaculos.o
+GENERATED += $(OBJDIR)/recordes.o
+GENERATED += $(OBJDIR)/sons.o
+OBJECTS += $(OBJDIR)/colisao.o
 OBJECTS += $(OBJDIR)/main.o
+OBJECTS += $(OBJDIR)/nave.o
 OBJECTS += $(OBJDIR)/obstaculos.o
+OBJECTS += $(OBJDIR)/recordes.o
+OBJECTS += $(OBJDIR)/sons.o
 
 # Rules
 # #############################################
@@ -185,10 +193,22 @@ endif
 # File Rules
 # #############################################
 
+$(OBJDIR)/colisao.o: src/colisao.c
+	@echo "$(notdir $<)"
+	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/main.o: src/main.c
 	@echo "$(notdir $<)"
 	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/nave.o: src/nave.c
+	@echo "$(notdir $<)"
+	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/obstaculos.o: src/obstaculos.c
+	@echo "$(notdir $<)"
+	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/recordes.o: src/recordes.c
+	@echo "$(notdir $<)"
+	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/sons.o: src/sons.c
 	@echo "$(notdir $<)"
 	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 
