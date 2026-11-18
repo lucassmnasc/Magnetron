@@ -1,4 +1,6 @@
 {
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
     "version": "2.0.0",
     "tasks": [
         {
@@ -7,19 +9,11 @@
             "command": "make",
             "windows": {
                 "command": "mingw32-make.exe",
-                "args": [
-                    "config=debug_x64"
-                ]
-            },
-            "linux": {
-                "args": [
-                    "config=debug_x64"
-                ]
             },
             "osx": {
                 "args": [
                     "config=debug_arm64"
-                ]
+                ],
             },
             "group": {
                 "kind": "build",
@@ -28,9 +22,7 @@
             "problemMatcher": [
                 "$gcc"
             ],
-            "dependsOn": [
-                "UpdateMake"
-            ]
+            "dependsOn":["UpdateMake"]
         },
         {
             "label": "build debug no premake",
@@ -38,23 +30,15 @@
             "command": "make",
             "windows": {
                 "command": "mingw32-make.exe",
-                "args": [
-                    "config=debug_x64"
-                ]
-            },
-            "linux": {
-                "args": [
-                    "config=debug_x64"
-                ]
             },
             "osx": {
                 "args": [
                     "config=debug_arm64"
-                ]
+                ],
             },
             "group": {
                 "kind": "build",
-                "isDefault": false
+                "isDefault": true
             },
             "problemMatcher": [
                 "$gcc"
@@ -68,28 +52,26 @@
                 "command": "mingw32-make.exe",
                 "args": [
                     "config=release_x64"
-                ]
+                ],
             },
             "linux": {
                 "args": [
                     "config=release_x64"
-                ]
+                ],
             },
             "osx": {
                 "args": [
                     "config=release_arm64"
-                ]
+                ],
             },
-            "group": {
+             "group": {
                 "kind": "build",
                 "isDefault": false
             },
             "problemMatcher": [
                 "$gcc"
             ],
-            "dependsOn": [
-                "UpdateMake"
-            ]
+            "dependsOn":["UpdateMake"]
         },
         {
             "label": "Clean",
@@ -99,122 +81,67 @@
                 "command": "mingw32-make.exe",
                 "args": [
                     "clean"
-                ]
+                ],
             },
             "linux": {
                 "args": [
                     "clean"
-                ]
+                ],
             },
             "osx": {
                 "args": [
                     "clean"
-                ]
+                ],
             },
-            "group": {
+             "group": {
                 "kind": "build",
                 "isDefault": false
             },
             "problemMatcher": [
                 "$gcc"
             ],
-            "dependsOn": [
-                "UpdateMake"
-            ]
-        },
-        {
-            "label": "Setup Project (Premake + Clean)",
-            "dependsOrder": "sequence",
-            "dependsOn": [
-                "UpdateMake",
-                "Clean"
-            ],
-            "group": "build",
-            "problemMatcher": []
+            "dependsOn":["UpdateMake"]
         },
         {
             "label": "UpdateMake",
-            "type": "shell",
+            "type": "process",
+            "command": "./premake5",
             "options": {
-                "cwd": "${workspaceFolder}/build"
+                "cwd": "${workspaceFolder}/build/"
             },
+            "args": [
+                "gmake"
+            ],
             "windows": {
-                "command": ".\\premake5.exe",
-                "args": [
-                    "gmake"
-                ]
+                "command": "./premake5.exe"
             },
             "linux": {
-                "command": "chmod +x ./premake5 && ./premake5 gmake"
+                "command": "./premake5"
             },
             "osx": {
-                "command": "chmod +x ./premake5.osx && ./premake5.osx gmake"
+                "command": "premake5.osx"
             },
             "group": "build",
-            "problemMatcher": [],
-            "dependsOn": [
-                "Generate compile_commands.json"
-            ]
-        },
-        {
-            "label": "Generate IDE Project (VS2022 / Xcode / Make)",
-            "type": "shell",
-            "options": {
-                "cwd": "${workspaceFolder}/build"
-            },
-            "windows": {
-                "command": ".\\premake5.exe",
-                "args": [
-                    "vs2022"
-                ]
-            },
-            "linux": {
-                "command": "chmod +x ./premake5 && ./premake5 gmake"
-            },
-            "osx": {
-                "command": "chmod +x ./premake5.osx && ./premake5.osx xcode4"
-            },
-            "group": "build",
-            "problemMatcher": []
-        },
-        {
-            "label": "Generate VS2026 Project (VS2026 / Xcode / Make)",
-            "type": "shell",
-            "options": {
-                "cwd": "${workspaceFolder}/build"
-            },
-            "windows": {
-                "command": ".\\premake5.exe",
-                "args": [
-                    "vs2026"
-                ]
-            },
-            "linux": {
-                "command": "chmod +x ./premake5 && ./premake5 gmake"
-            },
-            "osx": {
-                "command": "chmod +x ./premake5.osx && ./premake5.osx xcode4"
-            },
-            "group": "build",
-            "problemMatcher": []
+            "dependsOn": ["Generate compile_commands.json"]
         },
         {
             "label": "Generate compile_commands.json",
-            "type": "shell",
+            "type": "process",
+            "command": "./premake5",
             "options": {
-                "cwd": "${workspaceFolder}/build"
+                "cwd": "${workspaceFolder}/build/"
             },
+            "args": [
+                "ecc"
+            ],
             "windows": {
-                "command": ".\\premake5.exe",
-                "args": [
-                    "ecc"
-                ]
+                "command": "./premake5.exe"
             },
             "linux": {
-                "command": "chmod +x ./premake5 && ./premake5 ecc"
+                "command": "./premake5"
             },
             "osx": {
-                "command": "chmod +x ./premake5.osx && ./premake5.osx ecc"
+                "command": "premake5.osx"
             },
             "group": "build",
             "problemMatcher": []
