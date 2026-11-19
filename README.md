@@ -10,6 +10,18 @@ Em **Magnetron**, o jogador comanda uma nave espacial em pistas no espaço, desv
 
 ---
 
+## 🎬 Demonstração
+
+<div align="center">
+
+[![Demonstração do Magnetron](https://img.youtube.com/vi/YEtNmUpvpn4/hqdefault.jpg)](https://www.youtube.com/watch?v=YEtNmUpvpn4)
+
+[Assista ao vídeo no YouTube](https://www.youtube.com/watch?v=YEtNmUpvpn4)
+
+</div>
+
+---
+
 ## 👥 Equipe
 
 <div align="center">
